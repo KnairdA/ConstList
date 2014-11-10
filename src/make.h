@@ -1,7 +1,8 @@
 #ifndef CONST_LIST_SRC_MAKE_H_
 #define CONST_LIST_SRC_MAKE_H_
 
-#include "detail/sfinae.h"
+#include "detail/type/sfinae.h"
+#include "detail/type/transformation.h"
 
 namespace ConstList {
 
@@ -38,7 +39,7 @@ template <
 constexpr auto make(const CAR& car, const CDRs&... cdrs) {
 	return make(
 		car,
-		make<CDRs...>(cdrs...)
+		make<typename detail::replace_type<CAR, CDRs>::type...>(cdrs...)
 	);
 }
 

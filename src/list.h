@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <utility>
 
-#include "detail/sfinae.h"
+#include "detail/type/sfinae.h"
 
 #include "cons.h"
 #include "make.h"

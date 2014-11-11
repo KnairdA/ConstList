@@ -41,6 +41,11 @@ constexpr auto nth(const Cons& cons) {
 	);
 }
 
+template <typename Cons>
+constexpr std::size_t size(const Cons&) {
+	return detail::size(typename detail::flatten_cons<Cons>::type());
+}
+
 }
 
 #endif  // CONST_LIST_SRC_LIST_H_

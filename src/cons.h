@@ -13,6 +13,8 @@ template <
 >
 struct Cons : detail::select_cons<CAR, CDR>::type {
 	typedef typename detail::select_cons<CAR, CDR>::type base;
+	typedef CAR car_type;
+	typedef CDR cdr_type;
 
 	using base::base;
 };

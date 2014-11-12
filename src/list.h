@@ -61,6 +61,30 @@ constexpr std::size_t size(const Cons&) {
 	return flatten_cons<Cons>::type::size;
 }
 
+template <
+	std::size_t Count,
+	typename    Cons,
+	typename... Current,
+	detail::enable_if<Count == 0> = 0
+>
+constexpr auto take(const Cons&, Current&&... cars) {
+	return make(cars...);
+}
+
+template <
+	std::size_t Count,
+	typename    Cons,
+	typename... Current,
+	detail::enable_if<Count != 0> = 0
+>
+constexpr auto take(const Cons& cons, Current&&... cars) {
+	return take<Count - 1>(
+		tail(cons),
+		cars...,
+		head(cons)
+	);
+}
+
 }
 
 #endif  // CONST_LIST_SRC_LIST_H_

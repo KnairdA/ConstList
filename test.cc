@@ -58,6 +58,43 @@ TEST_F(ConstListTest, Make) {
 	>::value));
 }
 
+TEST_F(ConstListTest, Size) {
+	EXPECT_EQ(ConstList::size(ConstList::make(42)),                 1);
+	EXPECT_EQ(ConstList::size(ConstList::make(42, 43)),             2);
+	EXPECT_EQ(ConstList::size(ConstList::make(42, 43, 44, 45, 46)), 5);
+}
+
+TEST_F(ConstListTest, Head) {
+	EXPECT_EQ(ConstList::head(ConstList::make(42)),                 42);
+	EXPECT_EQ(ConstList::head(ConstList::make(42, 43)),             42);
+	EXPECT_EQ(ConstList::head(ConstList::make(42, 43, 44, 45, 46)), 42);
+}
+
+TEST_F(ConstListTest, Tail) {
+	EXPECT_EQ(ConstList::tail(ConstList::make(42, 43)).car,             43);
+	EXPECT_EQ(ConstList::tail(ConstList::make(42, 43, 44, 45, 46)).car, 43);
+}
+
+TEST_F(ConstListTest, Nth) {
+	EXPECT_EQ(ConstList::nth<0>(ConstList::make(42, 43, 44, 45, 46)), 42);
+	EXPECT_EQ(ConstList::nth<1>(ConstList::make(42, 43, 44, 45, 46)), 43);
+	EXPECT_EQ(ConstList::nth<2>(ConstList::make(42, 43, 44, 45, 46)), 44);
+	EXPECT_EQ(ConstList::nth<3>(ConstList::make(42, 43, 44, 45, 46)), 45);
+	EXPECT_EQ(ConstList::nth<4>(ConstList::make(42, 43, 44, 45, 46)), 46);
+}
+
+TEST_F(ConstListTest, Take) {
+	EXPECT_EQ(ConstList::size(ConstList::take<1>(ConstList::make(42, 43, 44, 45, 46))), 1);
+	EXPECT_EQ(ConstList::size(ConstList::take<2>(ConstList::make(42, 43, 44, 45, 46))), 2);
+	EXPECT_EQ(ConstList::size(ConstList::take<3>(ConstList::make(42, 43, 44, 45, 46))), 3);
+	EXPECT_EQ(ConstList::size(ConstList::take<4>(ConstList::make(42, 43, 44, 45, 46))), 4);
+	EXPECT_EQ(ConstList::size(ConstList::take<5>(ConstList::make(42, 43, 44, 45, 46))), 5);
+
+	EXPECT_EQ(ConstList::nth<0>(ConstList::take<3>(ConstList::make(42, 43, 44, 45, 46))), 42);
+	EXPECT_EQ(ConstList::nth<1>(ConstList::take<3>(ConstList::make(42, 43, 44, 45, 46))), 43);
+	EXPECT_EQ(ConstList::nth<2>(ConstList::take<3>(ConstList::make(42, 43, 44, 45, 46))), 44);
+}
+
 int main(int argc, char **argv) {
 	testing::InitGoogleTest(&argc, argv);
 

@@ -43,7 +43,7 @@ constexpr auto nth(const Cons& cons) {
 
 template <typename Cons>
 constexpr std::size_t size(const Cons&) {
-	return detail::size(typename detail::flatten_cons<Cons>::type());
+	return flatten_cons<Cons>::type::size;
 }
 
 }

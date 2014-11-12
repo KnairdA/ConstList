@@ -4,8 +4,6 @@
 #include <utility>
 #include <type_traits>
 
-#include "type/transformation.h"
-
 namespace ConstList {
 namespace detail {
 
@@ -57,11 +55,6 @@ using select_cons = std::conditional<
 	ConsWithoutCdr<CAR>,
 	ConsWithCdr<CAR, CDR>
 >;
-
-template <typename... Types>
-constexpr std::size_t size(detail::flattened_cons<Types...>) {
-	return sizeof...(Types);
-}
 
 }
 }

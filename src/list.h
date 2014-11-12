@@ -13,11 +13,26 @@ namespace ConstList {
 
 template <typename Cons>
 constexpr auto head(const Cons& cons) {
+	static_assert(
+		detail::is_cons<Cons>::value,
+		"Cons must be a instantiation of Cons"
+	);
+
 	return cons.car;
 }
 
 template <typename Cons>
 constexpr auto tail(const Cons& cons) {
+	static_assert(
+		detail::is_cons<Cons>::value,
+		"Cons must be a instantiation of Cons"
+	);
+
+	static_assert(
+		detail::is_cons<typename Cons::cdr_type>::value,
+		"CDR must be a instantiation of Cons if queried by tail"
+	);
+
 	return cons.cdr;
 }
 

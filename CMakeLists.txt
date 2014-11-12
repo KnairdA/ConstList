@@ -11,6 +11,16 @@ include_directories(
 )
 
 add_executable(
-	test
+	tests
 	test.cc
+)
+
+target_link_libraries(
+	tests
+	gtest
+)
+
+add_custom_command(
+	TARGET tests
+	POST_BUILD COMMAND ./tests
 )

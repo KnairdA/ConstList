@@ -43,7 +43,6 @@ constexpr auto make(const CAR& car, const CDRs&... cdrs) {
 	);
 }
 
-
 }
 
 #endif  // CONST_LIST_SRC_MAKE_H_

@@ -139,6 +139,20 @@ TEST_F(ConstListTest, Map) {
 	EXPECT_EQ(ConstList::nth<4>(targetList), 10);
 }
 
+TEST_F(ConstListTest, Foldr) {
+	const int result{
+		ConstList::foldr(
+			ConstList::make(1, 2, 3, 4, 5),
+			[](const int& x, const int& y) -> int {
+				return x + y;
+			},
+			1
+		)
+	};
+
+	EXPECT_EQ(result, 16);
+}
+
 int main(int argc, char **argv) {
 	testing::InitGoogleTest(&argc, argv);
 

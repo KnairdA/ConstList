@@ -141,6 +141,37 @@ constexpr auto map(
 	);
 }
 
+template <
+	typename Cons,
+	typename Function,
+	typename Intitial,
+	detail::enable_if<!is_cons<typename Cons::cdr_type>::value> = 0
+>
+constexpr auto foldr(
+	const Cons&     cons,
+	const Function& function,
+	const Intitial& initial
+) {
+	return function(cons.car, initial);
+}
+
+template <
+	typename Cons,
+	typename Function,
+	typename Intitial,
+	detail::enable_if<is_cons<typename Cons::cdr_type>::value> = 0
+>
+constexpr auto foldr(
+	const Cons&     cons,
+	const Function& function,
+	const Intitial& initial
+) {
+	return function(
+		cons.car,
+		foldr(cons.cdr, function, initial)
+	);
+}
+
 }
 
 #endif  // CONST_LIST_SRC_LIST_H_

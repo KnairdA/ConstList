@@ -95,8 +95,8 @@ constexpr auto concatenate(const CAR& car, const CDR& cdr) {
 }
 
 template <
-	typename    CAR,
-	typename    CDR,
+	typename CAR,
+	typename CDR,
 	detail::enable_if<is_cons<typename CAR::cdr_type>::value> = 0
 >
 constexpr auto concatenate(const CAR& car, const CDR& cdr) {
@@ -104,6 +104,14 @@ constexpr auto concatenate(const CAR& car, const CDR& cdr) {
 		car.car,
 		concatenate(car.cdr, cdr)
 	);
+}
+
+template <
+	typename CAR,
+	typename CDR
+>
+constexpr auto operator+(const CAR& car, const CDR& cdr) {
+	return concatenate(car, cdr);
 }
 
 

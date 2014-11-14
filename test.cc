@@ -96,35 +96,29 @@ TEST_F(ConstListTest, Take) {
 }
 
 TEST_F(ConstListTest, Concatenate) {
-	auto concatTest1 = ConstList::concatenate(
-		ConstList::make(42),
-		ConstList::make(43)
-	);
+	auto concatTest1 = ConstList::make(42)
+	                 + ConstList::make(43);
 
-	EXPECT_EQ(ConstList::size(concatTest1), 2);
+	EXPECT_EQ(ConstList::size(concatTest1),    2);
 	EXPECT_EQ(ConstList::nth<0>(concatTest1), 42);
 	EXPECT_EQ(ConstList::nth<1>(concatTest1), 43);
 
-	auto concatTest2 = ConstList::concatenate(
-		ConstList::make(42, 43, 44, 45, 46),
-		ConstList::make(47, 48, 49, 50, 51, 52)
-	);
+	auto concatTest2 = ConstList::make(42, 43, 44, 45, 46)
+	                 + ConstList::make(47, 48, 49, 50, 51, 52);
 
-	EXPECT_EQ(ConstList::size(concatTest2), 11);
-	EXPECT_EQ(ConstList::nth<0>(concatTest2), 42);
-	EXPECT_EQ(ConstList::nth<4>(concatTest2), 46);
-	EXPECT_EQ(ConstList::nth<5>(concatTest2), 47);
+	EXPECT_EQ(ConstList::size(concatTest2),    11);
+	EXPECT_EQ(ConstList::nth<0>(concatTest2),  42);
+	EXPECT_EQ(ConstList::nth<4>(concatTest2),  46);
+	EXPECT_EQ(ConstList::nth<5>(concatTest2),  47);
 	EXPECT_EQ(ConstList::nth<10>(concatTest2), 52);
 
-	auto concatTest3 = ConstList::concatenate(
-		ConstList::make(42, 43, 44, 45, 46, 47),
-		ConstList::make(48, 49, 50, 51, 52)
-	);
+	auto concatTest3 = ConstList::make(42, 43, 44, 45, 46, 47)
+	                 + ConstList::make(48, 49, 50, 51, 52);
 
-	EXPECT_EQ(ConstList::size(concatTest3), 11);
-	EXPECT_EQ(ConstList::nth<0>(concatTest3), 42);
-	EXPECT_EQ(ConstList::nth<5>(concatTest3), 47);
-	EXPECT_EQ(ConstList::nth<6>(concatTest3), 48);
+	EXPECT_EQ(ConstList::size(concatTest3),    11);
+	EXPECT_EQ(ConstList::nth<0>(concatTest3),  42);
+	EXPECT_EQ(ConstList::nth<5>(concatTest3),  47);
+	EXPECT_EQ(ConstList::nth<6>(concatTest3),  48);
 	EXPECT_EQ(ConstList::nth<10>(concatTest3), 52);
 }
 

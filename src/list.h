@@ -114,6 +114,32 @@ constexpr auto operator+(const CAR& car, const CDR& cdr) {
 	return concatenate(car, cdr);
 }
 
+template <
+	typename Cons,
+	typename Function,
+	detail::enable_if<!is_cons<typename Cons::cdr_type>::value> = 0
+>
+constexpr auto map(
+	const Cons&     cons,
+	const Function& function
+) {
+	return make(function(cons.car));
+}
+
+template <
+	typename Cons,
+	typename Function,
+	detail::enable_if<is_cons<typename Cons::cdr_type>::value> = 0
+>
+constexpr auto map(
+	const Cons&     cons,
+	const Function& function
+) {
+	return make(
+		function(cons.car),
+		map(cons.cdr, function)
+	);
+}
 
 }
 

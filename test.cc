@@ -99,14 +99,14 @@ TEST_F(ConstListTest, Concatenate) {
 	auto concatTest1 = ConstList::make(42)
 	                 + ConstList::make(43);
 
-	EXPECT_EQ(ConstList::size(concatTest1),    2);
+	ASSERT_EQ(ConstList::size(concatTest1),    2);
 	EXPECT_EQ(ConstList::nth<0>(concatTest1), 42);
 	EXPECT_EQ(ConstList::nth<1>(concatTest1), 43);
 
 	auto concatTest2 = ConstList::make(42, 43, 44, 45, 46)
 	                 + ConstList::make(47, 48, 49, 50, 51, 52);
 
-	EXPECT_EQ(ConstList::size(concatTest2),    11);
+	ASSERT_EQ(ConstList::size(concatTest2),    11);
 	EXPECT_EQ(ConstList::nth<0>(concatTest2),  42);
 	EXPECT_EQ(ConstList::nth<4>(concatTest2),  46);
 	EXPECT_EQ(ConstList::nth<5>(concatTest2),  47);
@@ -115,11 +115,28 @@ TEST_F(ConstListTest, Concatenate) {
 	auto concatTest3 = ConstList::make(42, 43, 44, 45, 46, 47)
 	                 + ConstList::make(48, 49, 50, 51, 52);
 
-	EXPECT_EQ(ConstList::size(concatTest3),    11);
+	ASSERT_EQ(ConstList::size(concatTest3),    11);
 	EXPECT_EQ(ConstList::nth<0>(concatTest3),  42);
 	EXPECT_EQ(ConstList::nth<5>(concatTest3),  47);
 	EXPECT_EQ(ConstList::nth<6>(concatTest3),  48);
 	EXPECT_EQ(ConstList::nth<10>(concatTest3), 52);
+}
+
+TEST_F(ConstListTest, Map) {
+	auto sourceList = ConstList::make(1, 2, 3, 4, 5);
+	auto targetList = ConstList::map(
+		sourceList,
+		[](const int& x) -> int {
+			return x * 2;
+		}
+	);
+
+	ASSERT_EQ(ConstList::size(targetList),   5);
+	EXPECT_EQ(ConstList::nth<0>(targetList), 2);
+	EXPECT_EQ(ConstList::nth<1>(targetList), 4);
+	EXPECT_EQ(ConstList::nth<2>(targetList), 6);
+	EXPECT_EQ(ConstList::nth<3>(targetList), 8);
+	EXPECT_EQ(ConstList::nth<4>(targetList), 10);
 }
 
 int main(int argc, char **argv) {

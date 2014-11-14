@@ -86,94 +86,26 @@ constexpr auto take(const Cons& cons, Current&&... cars) {
 }
 
 template <
-	typename    CAR,
-	typename    CDR,
-	typename... CarTypes,
-	typename... CdrTypes,
-	typename... MergedTypes,
-	detail::enable_if<(
-		sizeof...(MergedTypes) == sizeof...(CarTypes)
-		                        + sizeof...(CdrTypes)
-	)> = 0
->
-constexpr auto concatenate(
-	const CAR&,
-	const CDR&,
-	detail::VariadicTypeList<CarTypes...>,
-	detail::VariadicTypeList<CdrTypes...>,
-	MergedTypes...                         values
-) {
-	return make(values...);
-}
-
-template <
-	typename    CAR,
-	typename    CDR,
-	typename... CarTypes,
-	typename... CdrTypes,
-	typename... MergedTypes,
-	detail::enable_if<(
-		sizeof...(MergedTypes) < sizeof...(CarTypes)
-	)> = 0
->
-constexpr auto concatenate(
-	const CAR&                             car,
-	const CDR&                             cdr,
-	detail::VariadicTypeList<CarTypes...>  carTypeList,
-	detail::VariadicTypeList<CdrTypes...>  cdrTypeList,
-	MergedTypes...                         values
-) {
-	return concatenate(
-		car,
-		cdr,
-		carTypeList,
-		cdrTypeList,
-		values...,
-		nth<sizeof...(MergedTypes)>(car)
-	);
-}
-
-template <
-	typename    CAR,
-	typename    CDR,
-	typename... CarTypes,
-	typename... CdrTypes,
-	typename... MergedTypes,
-	detail::enable_if<(
-		sizeof...(MergedTypes) >= sizeof...(CarTypes) &&
-		sizeof...(MergedTypes) <  sizeof...(CarTypes)
-		                       +  sizeof...(CdrTypes)
-	)> = 0
->
-constexpr auto concatenate(
-	const CAR&                             car,
-	const CDR&                             cdr,
-	detail::VariadicTypeList<CarTypes...>  carTypeList,
-	detail::VariadicTypeList<CdrTypes...>  cdrTypeList,
-	MergedTypes...                         values
-) {
-	return concatenate(
-		car,
-		cdr,
-		carTypeList,
-		cdrTypeList,
-		values...,
-		nth<sizeof...(MergedTypes) - sizeof...(CarTypes)>(cdr)
-	);
-}
-
-template <
 	typename CAR,
-	typename CDR
+	typename CDR,
+	detail::enable_if<!is_cons<typename CAR::cdr_type>::value> = 0
 >
 constexpr auto concatenate(const CAR& car, const CDR& cdr) {
-	return concatenate(
-		car,
-		cdr,
-		typename flatten_cons<CAR>::type(),
-		typename flatten_cons<CDR>::type()
+	return make(car.car, cdr);
+}
+
+template <
+	typename    CAR,
+	typename    CDR,
+	detail::enable_if<is_cons<typename CAR::cdr_type>::value> = 0
+>
+constexpr auto concatenate(const CAR& car, const CDR& cdr) {
+	return make(
+		car.car,
+		concatenate(car.cdr, cdr)
 	);
 }
+
 
 }
 

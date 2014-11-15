@@ -189,6 +189,17 @@ constexpr auto map(
 	);
 }
 
+template <typename Cons>
+constexpr auto reverse(const Cons& cons) {
+	return foldr(
+		cons,
+		[](auto car, auto cdr) {
+			return concatenate(cdr, ConstList::make(car));
+		},
+		ConstList::make()
+	);
+}
+
 }
 
 #endif  // CONST_LIST_SRC_LIST_H_

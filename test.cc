@@ -153,6 +153,19 @@ TEST_F(ConstListTest, Map) {
 	EXPECT_EQ(ConstList::nth<4>(targetList), 10);
 }
 
+TEST_F(ConstListTest, Reverse) {
+	auto descendingList = ConstList::reverse(
+		ConstList::make(1, 2, 3, 4, 5)
+	);
+
+	ASSERT_EQ(ConstList::size(descendingList),   5);
+	EXPECT_EQ(ConstList::nth<0>(descendingList), 5);
+	EXPECT_EQ(ConstList::nth<1>(descendingList), 4);
+	EXPECT_EQ(ConstList::nth<2>(descendingList), 3);
+	EXPECT_EQ(ConstList::nth<3>(descendingList), 2);
+	EXPECT_EQ(ConstList::nth<4>(descendingList), 1);
+}
+
 int main(int argc, char **argv) {
 	testing::InitGoogleTest(&argc, argv);
 

@@ -7,7 +7,7 @@
 - `Cons` class template for representing constant list structures at compile time
 - `make` method template for easily constructing `Cons` structures
 - basic list accessors such as `size`, `head`, `tail`, `nth` and `take`
-- some list operators such as `concatenate`, `map` and `foldr`
+- some list operators such as `concatenate`, `foldr`, `map` and `reverse`
 - test cases
 
 ## Requirements:

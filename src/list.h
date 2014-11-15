@@ -88,7 +88,34 @@ constexpr auto take(const Cons& cons, Current&&... cars) {
 template <
 	typename CAR,
 	typename CDR,
-	detail::enable_if<!is_cons<typename CAR::cdr_type>::value> = 0
+	detail::enable_if<
+		 is_empty_cons<CAR>::value &&
+		!is_empty_cons<CDR>::value
+	> = 0
+>
+constexpr auto concatenate(const CAR&, const CDR& cdr) {
+	return cdr;
+}
+
+template <
+	typename CAR,
+	typename CDR,
+	detail::enable_if<
+		!is_empty_cons<CAR>::value &&
+		 is_empty_cons<CDR>::value
+	> = 0
+>
+constexpr auto concatenate(const CAR& car, const CDR&) {
+	return car;
+}
+
+template <
+	typename CAR,
+	typename CDR,
+	detail::enable_if<
+		 is_empty_cons<typename CAR::cdr_type>::value &&
+		!is_empty_cons<CDR>::value
+	> = 0
 >
 constexpr auto concatenate(const CAR& car, const CDR& cdr) {
 	return make(car.car, cdr);
@@ -97,7 +124,7 @@ constexpr auto concatenate(const CAR& car, const CDR& cdr) {
 template <
 	typename CAR,
 	typename CDR,
-	detail::enable_if<is_cons<typename CAR::cdr_type>::value> = 0
+	detail::enable_if<!is_empty_cons<typename CAR::cdr_type>::value> = 0
 >
 constexpr auto concatenate(const CAR& car, const CDR& cdr) {
 	return make(
@@ -117,35 +144,8 @@ constexpr auto operator+(const CAR& car, const CDR& cdr) {
 template <
 	typename Cons,
 	typename Function,
-	detail::enable_if<!is_cons<typename Cons::cdr_type>::value> = 0
->
-constexpr auto map(
-	const Cons&     cons,
-	const Function& function
-) {
-	return make(function(cons.car));
-}
-
-template <
-	typename Cons,
-	typename Function,
-	detail::enable_if<is_cons<typename Cons::cdr_type>::value> = 0
->
-constexpr auto map(
-	const Cons&     cons,
-	const Function& function
-) {
-	return make(
-		function(cons.car),
-		map(cons.cdr, function)
-	);
-}
-
-template <
-	typename Cons,
-	typename Function,
 	typename Intitial,
-	detail::enable_if<!is_cons<typename Cons::cdr_type>::value> = 0
+	detail::enable_if<is_empty_cons<typename Cons::cdr_type>::value> = 0
 >
 constexpr auto foldr(
 	const Cons&     cons,
@@ -159,7 +159,7 @@ template <
 	typename Cons,
 	typename Function,
 	typename Intitial,
-	detail::enable_if<is_cons<typename Cons::cdr_type>::value> = 0
+	detail::enable_if<!is_empty_cons<typename Cons::cdr_type>::value> = 0
 >
 constexpr auto foldr(
 	const Cons&     cons,
@@ -169,6 +169,23 @@ constexpr auto foldr(
 	return function(
 		cons.car,
 		foldr(cons.cdr, function, initial)
+	);
+}
+
+template <
+	typename Cons,
+	typename Function
+>
+constexpr auto map(
+	const Cons&     cons,
+	const Function& function
+) {
+	return foldr(
+		cons,
+		[&function](auto car, auto cdr) {
+			return concatenate(make(function(car)), cdr);
+		},
+		ConstList::make()
 	);
 }
 

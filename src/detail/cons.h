@@ -8,11 +8,18 @@ namespace ConstList {
 namespace detail {
 
 struct cons_tag{ };
+struct ConsEmpty : cons_tag { };
 
 template <typename Cons>
 using is_cons = std::integral_constant<
 	bool,
-	std::is_base_of<detail::cons_tag, Cons>::value
+	std::is_base_of<cons_tag, Cons>::value
+>;
+
+template <typename Cons>
+using is_empty_cons = std::integral_constant<
+	bool,
+	std::is_base_of<ConsEmpty, Cons>::value
 >;
 
 template <
@@ -30,6 +37,9 @@ struct ConsWithCdr : cons_tag {
 		"CAR type must be equal to CDR::car type"
 	);
 
+	typedef CAR car_type;
+	typedef CDR cdr_type;
+
 	ConsWithCdr(const CAR& value, const CDR& next):
 		car{value},
 		cdr{next} { }
@@ -40,10 +50,15 @@ struct ConsWithCdr : cons_tag {
 
 template <typename CAR>
 struct ConsWithoutCdr : cons_tag {
-	ConsWithoutCdr(const CAR& value):
-		car{value} { }
+	typedef CAR       car_type;
+	typedef ConsEmpty cdr_type;
 
-	const CAR car;
+	ConsWithoutCdr(const CAR& value):
+		car{value},
+		cdr{} { }
+
+	const CAR       car;
+	const ConsEmpty cdr;
 };
 
 template <
@@ -51,9 +66,13 @@ template <
 	typename CDR
 >
 using select_cons = std::conditional<
-	std::is_void<CDR>::value,
-	ConsWithoutCdr<CAR>,
-	ConsWithCdr<CAR, CDR>
+	std::is_void<CAR>::value,
+	ConsEmpty,
+	typename std::conditional<
+		std::is_void<CDR>::value,
+		ConsWithoutCdr<CAR>,
+		ConsWithCdr<CAR, CDR>
+	>::type
 >;
 
 }

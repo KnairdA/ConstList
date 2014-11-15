@@ -7,6 +7,7 @@
 namespace ConstList {
 
 using detail::is_cons;
+using detail::is_empty_cons;
 
 template <
 	typename CAR,
@@ -14,8 +15,6 @@ template <
 >
 struct Cons : detail::select_cons<CAR, CDR>::type {
 	typedef typename detail::select_cons<CAR, CDR>::type base;
-	typedef CAR car_type;
-	typedef CDR cdr_type;
 
 	using base::base;
 };
@@ -31,9 +30,9 @@ struct flatten_cons {
 	);
 
 	typedef typename std::conditional<
-		is_cons<typename Cons::cdr_type>::value,
-		flatten_cons<typename Cons::cdr_type, Current..., typename Cons::car_type>,
-		detail::VariadicTypeList<             Current..., typename Cons::car_type>
+		is_empty_cons<typename Cons::cdr_type>::value,
+		detail::VariadicTypeList<             Current..., typename Cons::car_type>,
+		flatten_cons<typename Cons::cdr_type, Current..., typename Cons::car_type>
 	>::type::type type;
 };
 

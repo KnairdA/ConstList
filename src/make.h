@@ -6,6 +6,10 @@
 
 namespace ConstList {
 
+constexpr Cons<void, void> make() {
+	return Cons<void, void>();
+}
+
 template <typename CAR>
 constexpr auto make(const CAR& car) {
 	return Cons<CAR, void>(car);

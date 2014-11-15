@@ -122,6 +122,20 @@ TEST_F(ConstListTest, Concatenate) {
 	EXPECT_EQ(ConstList::nth<10>(concatTest3), 52);
 }
 
+TEST_F(ConstListTest, Foldr) {
+	const int result{
+		ConstList::foldr(
+			ConstList::make(1, 2, 3, 4, 5),
+			[](const int& x, const int& y) -> int {
+				return x + y;
+			},
+			1
+		)
+	};
+
+	EXPECT_EQ(result, 16);
+}
+
 TEST_F(ConstListTest, Map) {
 	auto sourceList = ConstList::make(1, 2, 3, 4, 5);
 	auto targetList = ConstList::map(
@@ -137,20 +151,6 @@ TEST_F(ConstListTest, Map) {
 	EXPECT_EQ(ConstList::nth<2>(targetList), 6);
 	EXPECT_EQ(ConstList::nth<3>(targetList), 8);
 	EXPECT_EQ(ConstList::nth<4>(targetList), 10);
-}
-
-TEST_F(ConstListTest, Foldr) {
-	const int result{
-		ConstList::foldr(
-			ConstList::make(1, 2, 3, 4, 5),
-			[](const int& x, const int& y) -> int {
-				return x + y;
-			},
-			1
-		)
-	};
-
-	EXPECT_EQ(result, 16);
 }
 
 int main(int argc, char **argv) {

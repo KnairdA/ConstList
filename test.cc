@@ -127,13 +127,13 @@ TEST_F(ConstListTest, Foldr) {
 		ConstList::foldr(
 			ConstList::make(1, 2, 3, 4, 5),
 			[](const int& x, const int& y) -> int {
-				return x + y;
+				return x - y;
 			},
 			1
 		)
 	};
 
-	EXPECT_EQ(result, 16);
+	EXPECT_EQ(result, 2);
 }
 
 TEST_F(ConstListTest, Map) {
@@ -164,6 +164,20 @@ TEST_F(ConstListTest, Reverse) {
 	EXPECT_EQ(ConstList::nth<2>(descendingList), 3);
 	EXPECT_EQ(ConstList::nth<3>(descendingList), 2);
 	EXPECT_EQ(ConstList::nth<4>(descendingList), 1);
+}
+
+TEST_F(ConstListTest, Foldl) {
+	const int result{
+		ConstList::foldl(
+			ConstList::make(1, 2, 3, 4, 5),
+			[](const int& x, const int& y) -> int {
+				return x - y;
+			},
+			1
+		)
+	};
+
+	EXPECT_EQ(result, -14);
 }
 
 int main(int argc, char **argv) {

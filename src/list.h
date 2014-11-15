@@ -200,6 +200,25 @@ constexpr auto reverse(const Cons& cons) {
 	);
 }
 
+template <
+	typename Cons,
+	typename Function,
+	typename Intitial
+>
+constexpr auto foldl(
+	const Cons&     cons,
+	const Function& function,
+	const Intitial& initial
+) {
+	return foldr(
+		reverse(cons),
+		[&function](auto car, auto cdr) {
+			return function(cdr, car);
+		},
+		initial
+	);
+}
+
 }
 
 #endif  // CONST_LIST_SRC_LIST_H_

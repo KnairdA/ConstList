@@ -104,6 +104,23 @@ constexpr bool any(
 	}
 }
 
+template <
+	typename Cons,
+	typename Function
+>
+constexpr bool all(
+	const Cons&     cons,
+	const Function& function
+) {
+	return foldr(
+		cons,
+		[&function](auto car, auto cdr) {
+			return function(car) && cdr;
+		},
+		true
+	);
+}
+
 }
 
 #endif  // CONST_LIST_SRC_OPERATION_HIGHER_H_

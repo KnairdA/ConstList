@@ -180,6 +180,15 @@ TEST_F(ConstListTest, Foldl) {
 	EXPECT_EQ(result, -14);
 }
 
+TEST_F(ConstListTest, Any) {
+	auto list = ConstList::make(1, 2, 3, 4, 5);
+
+	EXPECT_TRUE( ConstList::any(list, [](auto x) { return x % 2 == 0; }));
+	EXPECT_TRUE( ConstList::any(list, [](auto x) { return x     >  0; }));
+	EXPECT_TRUE( ConstList::any(list, [](auto x) { return x     == 5; }));
+	EXPECT_FALSE(ConstList::any(list, [](auto x) { return x     == 6; }));
+}
+
 int main(int argc, char **argv) {
 	testing::InitGoogleTest(&argc, argv);
 

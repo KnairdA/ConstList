@@ -14,9 +14,9 @@ constexpr auto reverse(const Cons& cons) {
 	return foldr(
 		cons,
 		[](auto car, auto cdr) {
-			return concatenate(cdr, ConstList::make(car));
+			return concatenate(cdr, make(car));
 		},
-		ConstList::make()
+		make()
 	);
 }
 

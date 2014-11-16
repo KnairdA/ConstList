@@ -76,6 +76,34 @@ constexpr auto foldl(
 	);
 }
 
+template <
+	typename Cons,
+	typename Function,
+	detail::enable_if<is_empty_cons<typename Cons::cdr_type>::value> = 0
+>
+constexpr bool any(
+	const Cons&     cons,
+	const Function& function
+) {
+	return function(cons.car);
+}
+
+template <
+	typename Cons,
+	typename Function,
+	detail::enable_if<!is_empty_cons<typename Cons::cdr_type>::value> = 0
+>
+constexpr bool any(
+	const Cons&     cons,
+	const Function& function
+) {
+	if ( function(cons.car) ) {
+		return true;
+	} else {
+		return false || any(cons.cdr, function);
+	}
+}
+
 }
 
 #endif  // CONST_LIST_SRC_OPERATION_HIGHER_H_

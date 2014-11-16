@@ -6,9 +6,12 @@
 
 - `Cons` class template for representing constant list structures at compile time
 - `make` method template for easily constructing `Cons` structures
+- list constructors such as `make` and `concatenate`
 - basic list accessors such as `size`, `head`, `tail`, `nth` and `take`
-- some list operators such as `concatenate`, `foldr`, `foldl`, `map`, `reverse`, `any` and `all`
-- test cases
+- higher order list operators such as `foldr`, `foldl` and `map`
+- higher order list queries such as `any`, `all` and `none`
+- special purpose methods such as `reverse`
+- test cases for all of the above
 
 ## Requirements:
 

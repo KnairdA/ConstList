@@ -121,6 +121,22 @@ constexpr bool all(
 	);
 }
 
+template <
+	typename Cons,
+	typename Function
+>
+constexpr bool none(
+	const Cons&     cons,
+	const Function& function
+) {
+	return !any(
+		cons,
+		[&function](auto car) {
+			return function(car);
+		}
+	);
+}
+
 }
 
 #endif  // CONST_LIST_SRC_OPERATION_HIGHER_H_

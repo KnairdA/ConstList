@@ -196,6 +196,14 @@ TEST_F(ConstListTest, All) {
 	EXPECT_FALSE(ConstList::all(list, [](auto x) { return x % 2 == 0; }));
 }
 
+TEST_F(ConstListTest, None) {
+	auto list = ConstList::make(1, 2, 3, 4, 5);
+
+	EXPECT_TRUE( ConstList::none(list, [](auto x) { return x     >  6; }));
+	EXPECT_FALSE(ConstList::none(list, [](auto x) { return x     >  0; }));
+	EXPECT_FALSE(ConstList::none(list, [](auto x) { return x % 2 == 0; }));
+}
+
 int main(int argc, char **argv) {
 	testing::InitGoogleTest(&argc, argv);
 

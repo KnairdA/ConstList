@@ -2,7 +2,6 @@
 #define CONST_LIST_SRC_CONS_H_
 
 #include "detail/cons.h"
-#include "detail/type/query.h"
 
 namespace ConstList {
 
@@ -31,7 +30,7 @@ struct flatten_cons {
 
 	typedef typename std::conditional<
 		is_empty_cons<typename Cons::cdr_type>::value,
-		detail::VariadicTypeList<             Current..., typename Cons::car_type>,
+		detail::ConsTypeList<                 Current..., typename Cons::car_type>,
 		flatten_cons<typename Cons::cdr_type, Current..., typename Cons::car_type>
 	>::type::type type;
 };

@@ -2,9 +2,25 @@
 #define CONST_LIST_SRC_MAKE_H_
 
 #include "detail/type/sfinae.h"
-#include "detail/type/transformation.h"
 
 namespace ConstList {
+
+namespace detail {
+
+template <
+	typename Target,
+	typename Source
+>
+struct unify_type {
+	static_assert(
+		std::is_convertible<Source, Target>::value,
+		"Type equality demands convertability"
+	);
+
+	typedef Target type;
+};
+
+}
 
 constexpr Cons<void, void> make() {
 	return Cons<void, void>();
@@ -32,7 +48,7 @@ template <
 constexpr auto make(const CAR& car, const CDR& cdr) {
 	return make(
 		car,
-		make<typename detail::replace_type<CAR, CDR>::type>(cdr)
+		make<typename detail::unify_type<CAR, CDR>::type>(cdr)
 	);
 }
 
@@ -43,7 +59,7 @@ template <
 constexpr auto make(const CAR& car, const CDRs&... cdrs) {
 	return make(
 		car,
-		make<typename detail::replace_type<CAR, CDRs>::type...>(cdrs...)
+		make<typename detail::unify_type<CAR, CDRs>::type...>(cdrs...)
 	);
 }
 

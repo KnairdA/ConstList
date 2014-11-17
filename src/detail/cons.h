@@ -22,6 +22,13 @@ using is_empty_cons = std::integral_constant<
 	std::is_base_of<ConsEmpty, Cons>::value
 >;
 
+template <typename... Types>
+struct ConsTypeList {
+	typedef ConsTypeList type;
+
+	static const std::size_t size = sizeof...(Types);
+};
+
 template <
 	typename CAR,
 	typename CDR

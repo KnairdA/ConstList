@@ -7,6 +7,16 @@
 namespace ConstList {
 namespace detail {
 
+/*------------------------------------------------------------------------------
+ All `CDR` template parameters of `Cons` must be derived from `detail::cons_tag`
+ This is asserted through `detail::is_cons` throughout the whole implementation
+ to reduce possible corner cases that would occur if one were allowed to pass
+ arbitrary types as `CDR` types.
+
+ i.e. an empty list / cons element is actually depicted as `ConsEmpty` or
+ `Cons<void, void>` internally.
+------------------------------------------------------------------------------*/
+
 struct cons_tag{ };
 struct ConsEmpty : cons_tag { };
 
@@ -22,12 +32,27 @@ using is_empty_cons = std::integral_constant<
 	std::is_base_of<ConsEmpty, Cons>::value
 >;
 
+/*------------------------------------------------------------------------------
+ Plain utility container for variadic parameter lists as required by `flatten_cons`.
+
+ Currently this functionality is only used by `size` to read the size of a given
+ `Cons` structure by querying the static `size` member of this class template.
+------------------------------------------------------------------------------*/
+
 template <typename... Types>
 struct ConsTypeList {
 	typedef ConsTypeList type;
 
 	static const std::size_t size = sizeof...(Types);
 };
+
+/*------------------------------------------------------------------------------
+ Implementations of the actual `Cons` functionality as selected based on the
+ template parameters of `Cons` by `detail::select_cons`.
+
+ Type equality of `CAR` and `CDR::car` is enforced to ensure type equality
+ throughout the whole `Cons` structure / list. Otherwise this would be a tuple.
+------------------------------------------------------------------------------*/
 
 template <
 	typename CAR,
@@ -67,6 +92,13 @@ struct ConsWithoutCdr : cons_tag {
 	const CAR       car;
 	const ConsEmpty cdr;
 };
+
+/*------------------------------------------------------------------------------
+ Selects the appropriate base class of `Cons`.
+
+ Both `ConsWithoutCdr` and `ConsWithCdr` require `CAR` to be non-void.
+ Void `CAR` automatically leads to `ConsEmpty` i.e. empty-list.
+------------------------------------------------------------------------------*/
 
 template <
 	typename CAR,

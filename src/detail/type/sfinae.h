@@ -9,7 +9,6 @@ namespace detail {
 template <bool Condition>
 using enable_if = typename std::enable_if<Condition, std::size_t>::type;
 
-
 }
 }
 

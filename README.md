@@ -12,6 +12,7 @@
 - higher order list queries such as `any`, `all` and `none`
 - special purpose methods such as `reverse`
 - test cases for all of the above
+- MIT license
 
 ## Requirements:
 

@@ -89,6 +89,7 @@ TEST_F(ConstListTest, Take) {
 	EXPECT_EQ(ConstList::size(ConstList::take<3>(ConstList::make(42, 43, 44, 45, 46))), 3);
 	EXPECT_EQ(ConstList::size(ConstList::take<4>(ConstList::make(42, 43, 44, 45, 46))), 4);
 	EXPECT_EQ(ConstList::size(ConstList::take<5>(ConstList::make(42, 43, 44, 45, 46))), 5);
+	EXPECT_EQ(ConstList::size(ConstList::take<9>(ConstList::make(42, 43, 44, 45, 46))), 5);
 
 	EXPECT_EQ(ConstList::nth<0>(ConstList::take<3>(ConstList::make(42, 43, 44, 45, 46))), 42);
 	EXPECT_EQ(ConstList::nth<1>(ConstList::take<3>(ConstList::make(42, 43, 44, 45, 46))), 43);

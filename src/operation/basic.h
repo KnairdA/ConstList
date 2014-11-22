@@ -61,17 +61,17 @@ template <
 	std::size_t Count,
 	typename    Cons,
 	typename... Current,
-	detail::enable_if<Count == 1> = 0
+	detail::enable_if<(Count == 0 || is_empty_cons<Cons>::value)> = 0
 >
-constexpr auto take(const Cons& cons, Current&&... cars) {
-	return make(cars..., head(cons));
+constexpr auto take(const Cons&, Current&&... cars) {
+	return make(cars...);
 }
 
 template <
 	std::size_t Count,
 	typename    Cons,
 	typename... Current,
-	detail::enable_if<Count != 1> = 0
+	detail::enable_if<(Count > 0 && !is_empty_cons<Cons>::value)> = 0
 >
 constexpr auto take(const Cons& cons, Current&&... cars) {
 	return take<Count - 1>(

@@ -20,13 +20,8 @@ constexpr auto head(const Cons& cons) {
 template <typename Cons>
 constexpr auto tail(const Cons& cons) {
 	static_assert(
-		is_cons<Cons>::value,
-		"Cons must be a instantiation of Cons"
-	);
-
-	static_assert(
-		is_cons<typename Cons::cdr_type>::value,
-		"CDR must be a instantiation of Cons if queried by tail"
+		is_cons<Cons>::value && !is_empty_cons<Cons>::value,
+		"Cons must be a non-empty instantiation of Cons"
 	);
 
 	return cons.cdr;

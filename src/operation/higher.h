@@ -13,21 +13,17 @@ template <
 	typename Cons,
 	typename Function,
 	typename Intitial,
-	detail::enable_if<is_empty_cons<typename Cons::cdr_type>::value> = 0
+	detail::enable_if<is_empty_cons<Cons>::value> = 0
 >
-constexpr auto foldr(
-	const Cons&     cons,
-	const Function& function,
-	const Intitial& initial
-) {
-	return function(cons.car, initial);
+constexpr auto foldr(const Cons&, const Function&, const Intitial& initial) {
+	return initial;
 }
 
 template <
 	typename Cons,
 	typename Function,
 	typename Intitial,
-	detail::enable_if<!is_empty_cons<typename Cons::cdr_type>::value> = 0
+	detail::enable_if<!is_empty_cons<Cons>::value> = 0
 >
 constexpr auto foldr(
 	const Cons&     cons,
@@ -44,10 +40,7 @@ template <
 	typename Cons,
 	typename Function
 >
-constexpr auto map(
-	const Cons&     cons,
-	const Function& function
-) {
+constexpr auto map(const Cons& cons, const Function& function) {
 	return foldr(
 		cons,
 		[&function](auto car, auto cdr) {
@@ -79,24 +72,18 @@ constexpr auto foldl(
 template <
 	typename Cons,
 	typename Function,
-	detail::enable_if<is_empty_cons<typename Cons::cdr_type>::value> = 0
+	detail::enable_if<is_empty_cons<Cons>::value> = 0
 >
-constexpr bool any(
-	const Cons&     cons,
-	const Function& function
-) {
-	return function(cons.car);
+constexpr bool any(const Cons&, const Function&) {
+	return false;
 }
 
 template <
 	typename Cons,
 	typename Function,
-	detail::enable_if<!is_empty_cons<typename Cons::cdr_type>::value> = 0
+	detail::enable_if<!is_empty_cons<Cons>::value> = 0
 >
-constexpr bool any(
-	const Cons&     cons,
-	const Function& function
-) {
+constexpr bool any(const Cons& cons, const Function& function) {
 	if ( function(cons.car) ) {
 		return true;
 	} else {
@@ -108,10 +95,7 @@ template <
 	typename Cons,
 	typename Function
 >
-constexpr bool all(
-	const Cons&     cons,
-	const Function& function
-) {
+constexpr bool all(const Cons& cons, const Function& function) {
 	return foldr(
 		cons,
 		[&function](auto car, auto cdr) {
@@ -125,10 +109,7 @@ template <
 	typename Cons,
 	typename Function
 >
-constexpr bool none(
-	const Cons&     cons,
-	const Function& function
-) {
+constexpr bool none(const Cons& cons, const Function& function) {
 	return !any(
 		cons,
 		[&function](auto car) {

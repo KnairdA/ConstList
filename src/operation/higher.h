@@ -5,6 +5,7 @@
 #include <make.h>
 #include <detail/type/sfinae.h>
 
+#include "specialized.h"
 #include "concatenate.h"
 
 namespace ConstList {
@@ -38,20 +39,6 @@ constexpr auto foldr(
 
 template <
 	typename Cons,
-	typename Function
->
-constexpr auto map(const Cons& cons, const Function& function) {
-	return foldr(
-		cons,
-		[&function](auto car, auto cdr) {
-			return concatenate(make(function(car)), cdr);
-		},
-		ConstList::make()
-	);
-}
-
-template <
-	typename Cons,
 	typename Function,
 	typename Intitial
 >
@@ -66,6 +53,20 @@ constexpr auto foldl(
 			return function(cdr, car);
 		},
 		initial
+	);
+}
+
+template <
+	typename Cons,
+	typename Function
+>
+constexpr auto map(const Cons& cons, const Function& function) {
+	return foldr(
+		cons,
+		[&function](auto car, auto cdr) {
+			return concatenate(make(function(car)), cdr);
+		},
+		ConstList::make()
 	);
 }
 
@@ -115,6 +116,24 @@ constexpr bool none(const Cons& cons, const Function& function) {
 		[&function](auto car) {
 			return function(car);
 		}
+	);
+}
+
+template <
+	typename Cons,
+	typename Function
+>
+constexpr std::size_t count(const Cons& cons, const Function& function) {
+	return foldr(
+		cons,
+		[&function](auto car, const std::size_t& cdr) -> std::size_t {
+			if ( function(car) ) {
+				return cdr + 1;
+			} else {
+				return cdr;
+			}
+		},
+		std::size_t{0}
 	);
 }
 

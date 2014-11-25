@@ -9,7 +9,7 @@
 - list constructors such as `make` and `concatenate`
 - basic list accessors such as `size`, `head`, `tail`, `nth` and `take`
 - higher order list operators such as `foldr`, `foldl` and `map`
-- higher order list queries such as `any`, `all` and `none`
+- higher order list queries such as `any`, `all`, `none` and `count`
 - special purpose methods such as `reverse`
 - test cases for all of the above
 - MIT license

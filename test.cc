@@ -205,6 +205,35 @@ TEST_F(ConstListTest, None) {
 	EXPECT_FALSE(ConstList::none(list, [](auto x) { return x % 2 == 0; }));
 }
 
+TEST_F(ConstListTest, Count) {
+	const std::size_t evenCount{
+		ConstList::count(
+			ConstList::make(1, 2, 3, 4, 5),
+			[](auto x) { return x % 2 == 0; }
+		)
+	};
+
+	EXPECT_EQ(evenCount, 2);
+
+	const std::size_t fullCount{
+		ConstList::count(
+			ConstList::make(1, 2, 3, 4, 5),
+			[](auto x) { return x > 0; }
+		)
+	};
+
+	EXPECT_EQ(fullCount, 5);
+
+	const std::size_t noneCount{
+		ConstList::count(
+			ConstList::make(1, 2, 3, 4, 5),
+			[](auto x) { return x > 5; }
+		)
+	};
+
+	EXPECT_EQ(noneCount, 0);
+}
+
 int main(int argc, char **argv) {
 	testing::InitGoogleTest(&argc, argv);
 

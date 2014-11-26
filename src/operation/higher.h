@@ -85,6 +85,11 @@ template <
 	detail::enable_if<!is_empty_cons<Cons>::value> = 0
 >
 constexpr bool any(const Cons& cons, const Function& function) {
+	static_assert(
+		std::is_same<decltype(function(cons.car)), bool>::value,
+		"Functor must return boolean for `any` to work"
+	);
+
 	if ( function(cons.car) ) {
 		return true;
 	} else {
@@ -99,7 +104,7 @@ template <
 constexpr bool all(const Cons& cons, const Function& function) {
 	return foldr(
 		cons,
-		[&function](auto car, auto cdr) {
+		[&function](auto car, auto cdr) -> bool {
 			return function(car) && cdr;
 		},
 		true
@@ -113,7 +118,7 @@ template <
 constexpr bool none(const Cons& cons, const Function& function) {
 	return !any(
 		cons,
-		[&function](auto car) {
+		[&function](auto car) -> bool {
 			return function(car);
 		}
 	);
@@ -127,6 +132,11 @@ constexpr std::size_t count(const Cons& cons, const Function& function) {
 	return foldr(
 		cons,
 		[&function](auto car, const std::size_t& cdr) -> std::size_t {
+			static_assert(
+				std::is_same<decltype(function(car)), bool>::value,
+				"Functor must return boolean for `count` to work"
+			);
+
 			if ( function(car) ) {
 				return cdr + 1;
 			} else {

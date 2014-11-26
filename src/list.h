@@ -6,7 +6,8 @@
 
 #include "operation/basic.h"
 #include "operation/concatenate.h"
-#include "operation/higher.h"
-#include "operation/specialized.h"
+#include "operation/higher/foldr.h"
+#include "operation/higher/query.h"
+#include "operation/higher/misc.h"
 
 #endif  // CONST_LIST_SRC_LIST_H_

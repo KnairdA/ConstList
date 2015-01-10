@@ -65,7 +65,7 @@ struct ConsWithCdr : cons_tag {
 	);
 
 	static_assert(
-		std::is_same<CAR, typename std::decay<decltype(CDR::car)>::type>::value,
+		std::is_same<CAR, typename CDR::car_type>::value,
 		"CAR type must be equal to CDR::car type"
 	);
 

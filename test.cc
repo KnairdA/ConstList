@@ -154,6 +154,45 @@ TEST_F(ConstListTest, Map) {
 	EXPECT_EQ(ConstList::nth<4>(targetList), 10);
 }
 
+TEST_F(ConstListTest, FizzBuzzMap) {
+	auto list = ConstList::map(
+		ConstList::make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+		[](const int& x) -> std::string {
+			std::string output{};
+
+			if ( x % 3 == 0 ) {
+				output += "Fizz";
+			}
+
+			if ( x % 5 == 0 ) {
+				output += "Buzz";
+			}
+
+			if ( output.empty() ) {
+				output += std::to_string(x);
+			}
+
+			return output;
+		}
+	);
+
+	EXPECT_EQ(ConstList::nth<0>(list),  "1");
+	EXPECT_EQ(ConstList::nth<1>(list),  "2");
+	EXPECT_EQ(ConstList::nth<2>(list),  "Fizz");
+	EXPECT_EQ(ConstList::nth<3>(list),  "4");
+	EXPECT_EQ(ConstList::nth<4>(list),  "Buzz");
+	EXPECT_EQ(ConstList::nth<5>(list),  "Fizz");
+	EXPECT_EQ(ConstList::nth<6>(list),  "7");
+	EXPECT_EQ(ConstList::nth<7>(list),  "8");
+	EXPECT_EQ(ConstList::nth<8>(list),  "Fizz");
+	EXPECT_EQ(ConstList::nth<9>(list),  "Buzz");
+	EXPECT_EQ(ConstList::nth<10>(list), "11");
+	EXPECT_EQ(ConstList::nth<11>(list), "Fizz");
+	EXPECT_EQ(ConstList::nth<12>(list), "13");
+	EXPECT_EQ(ConstList::nth<13>(list), "14");
+	EXPECT_EQ(ConstList::nth<14>(list), "FizzBuzz");
+}
+
 TEST_F(ConstListTest, Reverse) {
 	auto descendingList = ConstList::reverse(
 		ConstList::make(1, 2, 3, 4, 5)

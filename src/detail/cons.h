@@ -72,7 +72,7 @@ struct ConsWithCdr : cons_tag {
 	typedef CAR car_type;
 	typedef CDR cdr_type;
 
-	ConsWithCdr(const CAR& value, const CDR& next):
+	constexpr ConsWithCdr(const CAR& value, const CDR& next):
 		car{value},
 		cdr{next} { }
 
@@ -85,7 +85,7 @@ struct ConsWithoutCdr : cons_tag {
 	typedef CAR       car_type;
 	typedef ConsEmpty cdr_type;
 
-	ConsWithoutCdr(const CAR& value):
+	constexpr ConsWithoutCdr(const CAR& value):
 		car{value},
 		cdr{} { }
 

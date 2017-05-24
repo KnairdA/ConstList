@@ -4,6 +4,8 @@
 
 This library was written as a experiment in how far one could take the optional compile-time executability offered by `constexpr` specifically and the C++ template metaprogramming facilities in general. While basic _Cons_ structures and appropriate accessor functions turned out to be quite straight forward to implement, the current problem is the absence of workable arbitrary value comparison in a templated context if one doesn't want to be limited to values that can be used as template parameters such as integers. This means that it is currently impossible to e.g. filter a list using `foldr`.
 
+Note that these restrictions were overcome in my [second attempt](https://github.com/KnairdA/TypeAsValue) at this problem which follows the concept of viewing types as values and templates as functions.
+
 ## Example:
 
 ```cpp
